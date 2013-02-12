@@ -5,8 +5,6 @@ import akka.actor._
 object ScrapeApp extends App {
 
   val system = ActorSystem()
-  system.actors
-
   val scraper = system.actorOf(Props[actors.WebsiteScraper])
 
   println("Starting!")
