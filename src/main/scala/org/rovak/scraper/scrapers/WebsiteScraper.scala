@@ -34,6 +34,7 @@ class WebsiteScraper extends Actor {
         val websiteScraper = context.system.actorOf(Props[WebsiteScraper])
         websiteScraper ! Website(link._1)
       }
+
     } catch {
       case e: Exception => { println("Could not scrape url: " + e.getMessage()) }
     }

@@ -9,7 +9,7 @@ case class SearchTerms(searchTerms: List[String])
 case class SearchTerm(searchTerm: String)
 
 /**
- * Simple actor who retrieves websites and searches for links
+ * Google actors which scrapes searchterm
  */
 class GoogleScraper extends Actor {
 
@@ -39,6 +39,7 @@ class GoogleScraper extends Actor {
       for (link <- links) {
         println("Url: " + link._1 + ", Website: " + link._2)
         val websiteScraper = context.system.actorOf(Props[WebsiteScraper])
+        websiteScraper ! Website(link._1)
       }
 
     } catch {
