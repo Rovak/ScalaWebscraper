@@ -1,4 +1,4 @@
-package org.rovak.scraper.actors
+package org.rovak.scraper.scrapers
 
 import akka.actor._
 import org.jsoup.Jsoup
@@ -15,14 +15,6 @@ case class Website(url: String)
 class WebsiteScraper extends Actor {
 
   /**
-   * @param link String A link from a Google search result
-   * @return String
-   */
-  def retrieveGoogleLink(link: String) = {
-    link.substring(link.indexOf("?q=") + 3, link.indexOf("&sa"))
-  }
-
-  /**
    * @param url String A website url which will be scraped for links
    * @return List[(String, String)]
    */
@@ -33,15 +25,9 @@ class WebsiteScraper extends Actor {
     try {
       val doc = Jsoup.connect(url).userAgent("Mozilla").timeout(0).get()
 
-      if (url.indexOf("www.google.com") > 0) {
-        links = doc.select("#res li.g h3.r a").map(x => (
-          retrieveGoogleLink(x.select("a[href]").attr("abs:href")),
-          x.select("a[href]").text)).toList
-      } else {
-        links = doc.select("a").map(x => (
-          x.select("a[href]").attr("abs:href"),
-          x.select("a[href]").text)).toList
-      }
+      links = doc.select("a").map(x => (
+        x.select("a[href]").attr("abs:href"),
+        x.select("a[href]").text)).toList
 
       for (link <- links) {
         println("Url: " + link._1 + ", Website: " + link._2)
@@ -61,15 +47,12 @@ class WebsiteScraper extends Actor {
    * @param links List[String]
    * @return List[String]
    */
-  def scrapeLinks(links: List[String]): List[String] = {
+  def scrapeLinks(links: List[String]) = {
 
     for (link <- links) {
       val websiteScraper = context.system.actorOf(Props[WebsiteScraper])
       websiteScraper ! Website(link)
     }
-
-    // TODO: valid return value
-    List("Return value")
   }
 
   /**

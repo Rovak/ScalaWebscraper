@@ -5,19 +5,14 @@ import akka.actor._
 object ScrapeApp extends App {
 
   val system = ActorSystem()
-  val scraper = system.actorOf(Props[actors.WebsiteScraper])
+  val scraper = system.actorOf(Props[scrapers.WebsiteScraper])
+  val google = system.actorOf(Props[scrapers.GoogleScraper])
 
   println("Starting!")
 
-  var links: List[String] = List(
-    "https://www.google.com/search?q=scala",
-    "https://www.google.com/search?q=php",
-    "https://www.google.com/search?q=javascript")
+  var links: List[String] = List("scala", "php", "javascript")
 
-  for (link <- links) {
-    println("Scraping website: " + link)
-    scraper ! actors.Website(link)
-  }
+  google ! scrapers.SearchTerms(links)
 
   println("Scrape request send!")
 }
