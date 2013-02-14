@@ -15,6 +15,8 @@ case class Website(url: String)
 class WebsiteScraper extends Actor {
 
   /**
+   * Retrieve all the <a> tags from the given url
+   * 
    * @param url String A website url which will be scraped for links
    * @return List[(String, String)]
    */

@@ -1,14 +1,13 @@
-package org.rovak.scraper
+package org.rovak.scraper.storage
 
 import akka.actor._
 import scala.slick.driver.MySQLDriver.simple._
-import Database.threadLocalSession
-import org.rovak.tables._
+import org.rovak.tables.{EmailsTable}
 
 case class Email(email: String, klantId: Int)
 
 /**
- * Stores scrape information
+ * Database Storage
  */
 class DatabaseStorage() extends Actor {
 
@@ -16,7 +15,7 @@ class DatabaseStorage() extends Actor {
 
   def receive = {
     case Email(email, klantId) => {
-      db withSession EmailsTable.insert(klantId, email)
+      //db withSession EmailsTable.insert(klantId, email)
     }
   }
 }

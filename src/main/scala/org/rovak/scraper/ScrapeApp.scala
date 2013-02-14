@@ -1,9 +1,12 @@
 package org.rovak.scraper
 
 import akka.actor._
+import org.rovak.scraper.storage.Email
+import org.rovak.scraper.storage.DatabaseStorage
 
-case class Test(name: String)
-
+/**
+ * Main
+ */
 object ScrapeApp extends App {
 
   val system = ActorSystem()

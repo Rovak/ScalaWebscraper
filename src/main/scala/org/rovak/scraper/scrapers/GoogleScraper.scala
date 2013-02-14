@@ -46,7 +46,7 @@ class GoogleScraper extends Actor {
       case e: Exception => { println("Could not scrape url: " + e.getMessage()) }
     }
 
-    links
+    return links
   }
 
   /**
