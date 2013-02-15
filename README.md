@@ -1,7 +1,11 @@
 Scala Webscraper
 ================
 
-## Example
+## Documentation
+
+- [API](http://ci.razko.nl/job/WebsiteScraper/Documentation/index.html)
+
+## Examples
 
 Scraping by Google search term
 
