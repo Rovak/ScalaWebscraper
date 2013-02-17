@@ -20,8 +20,8 @@ case class Row(url: String, name: String)
  */
 class QueryBuilder(url: String) {
 
-  protected var _url: String = null
-  protected var _query: String = null
+  var _url: String = null
+  var _query: String = null
   
   /** Useless getters and setters just for test **/
   def getUrl() = url
@@ -54,7 +54,7 @@ class QueryBuilder(url: String) {
    * 
    * @return a list of Rows
    */
-  def result: List[(Row)] = {
+  def links: List[(Row)] = {
     val doc = Jsoup.connect(_url).userAgent("Mozilla").timeout(0).get()
     return doc.select(_query)
        .map(x => (
