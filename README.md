@@ -5,6 +5,17 @@ Scala Webscraper
 
 - [API](http://ci.razko.nl/job/WebsiteScraper/Documentation/index.html)
 
+## Build
+
+To build the project you need to have Scala 2.10.0 >= and sbt 1.12.0 >= installed. 
+You can easily install it using this [install script](~/eclipse_scala/workspace/webscraper)
+
+## Usage
+
+Run `sbt run` in the root folder and choose the client or server application.
+
+You have to start the client application first
+
 ## Examples
 
 Scraping by Google search term
