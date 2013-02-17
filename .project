@@ -1,5 +1,5 @@
 <projectDescription>
-  <name>Web Scraping</name>
+  <name>Scala Webscraper</name>
   <buildSpec>
     <buildCommand>
       <name>org.scala-ide.sdt.core.scalabuilder</name>

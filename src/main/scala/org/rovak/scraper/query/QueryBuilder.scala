@@ -9,7 +9,7 @@ import scala.collection.JavaConversions._
 
 /**
  * @param url the full url
- * @param name the contents of the A tag
+ * @param name 	the contents of the A tag
  */
 case class Row(url: String, name: String)
 
@@ -18,7 +18,7 @@ case class Row(url: String, name: String)
  * 
  * @param url the website from which to scrape
  */
-class QueryBuilder(url: String) {
+class QueryBuilder(url: String) extends Serializable {
 
   var _url: String = null
   var _query: String = null

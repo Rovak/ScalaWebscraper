@@ -42,7 +42,7 @@ class WebsiteScraper extends Actor {
     }
 
     links
-  }
+  }  
 
   /**
    * Iterate through a list of websites and call the getLinks for each
@@ -58,9 +58,6 @@ class WebsiteScraper extends Actor {
     }
   }
 
-  /**
-   * Message Listener
-   */
   def receive = {
     case Links(links) => {
       scrapeLinks(links)

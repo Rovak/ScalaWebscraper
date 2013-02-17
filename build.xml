@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project name="webscraper">
-	<target name="docs">
-		<exec executable="scaladoc" description="Generate scaladoc">
-			<arg value="-d build/api" />
-		</exec>
-	</target>
-</project>
