@@ -4,16 +4,20 @@ import akka.actor._
 import akka.kernel.Bootable
 import com.typesafe.config._
 import org.rovak.scraper.query._
+import akka.routing.RoundRobinRouter
 
 /**
  * Main server which will send instructions to the clients
  */
 class ServerApp extends Bootable {
   val system = ActorSystem("ServerPool", ConfigFactory.load.getConfig("server"))
-  val actor = system.actorFor("akka://Client@127.0.0.1:2554/user/query");
-  
+  val server1 = system.actorFor("akka://Client@127.0.0.1:2554/user/query")
+  val server2 = system.actorFor("akka://Client@127.0.0.1:2555/user/query")
+  val routees = List[ActorRef](server1, server2)
+  val router2 = system.actorOf(Props().withRouter(RoundRobinRouter(routees = routees)))
+
   def sendMessage = {
-    actor ! scrapers.Query(Scrape from "http://www.google.nl/search?q=php" select "a")
+    router2 ! scrapers.Query(Scrape from "http://www.google.nl/search?q=php" select "a")
   }
 
   def startup = {

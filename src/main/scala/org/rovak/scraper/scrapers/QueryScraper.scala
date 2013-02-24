@@ -18,14 +18,19 @@ case class Query(queryBuilder: QueryBuilder)
  */
 class QueryScraper extends Actor {
 
+  println("New Query Actor")
+
   /**
    * @param qb
    */
   def ScrapeQuery(qb: QueryBuilder) = {
+    println("scraping")
     val doc = Jsoup.connect(qb._url).userAgent("Mozilla").timeout(0).get()
     val list = doc.select(qb._query)
       .map(x => (
         Row(x.select("a[href]").attr("abs:href"), x.select("a[href]").text))).toList
+
+    println("Found: " + list.size)
   }
 
   def receive = {
