@@ -1,5 +1,4 @@
-package org.rovak.scraper
-
+package scraper.demo
 
 import org.rovak.scraper.query._
 import org.jsoup.nodes.{ Element, Document }

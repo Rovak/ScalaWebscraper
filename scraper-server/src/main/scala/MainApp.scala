@@ -1,4 +1,4 @@
-package org.rovak.scraper
+package scraper.demo
 
 /**
  * Main application which will be used in the packaged version

@@ -1,4 +1,4 @@
-package org.rovak.scraper
+package scraper.demo
 
 import akka.actor._
 import akka.kernel.Bootable
