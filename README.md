@@ -8,7 +8,7 @@ Scala Webscraper
 ## Build
 
 To build the project you need to have Scala 2.10.0 >= and sbt 1.12.0 >= installed. 
-You can easily install it using this [install script](~/eclipse_scala/workspace/webscraper)
+You can easily install it using this [install script](https://gist.github.com/Rovak/4967148)
 
 ## Usage
 
