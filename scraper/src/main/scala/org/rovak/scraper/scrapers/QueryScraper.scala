@@ -25,8 +25,8 @@ class QueryScraper extends Actor {
    */
   def ScrapeQuery(qb: QueryBuilder) = {
     println("scraping")
-    val doc = Jsoup.connect(qb._url).userAgent("Mozilla").timeout(0).get()
-    val list = doc.select(qb._query)
+    val doc = Jsoup.connect(qb.url).userAgent("Mozilla").timeout(0).get()
+    val list = doc.select(qb.query)
       .map(x => (
         Row(x.select("a[href]").attr("abs:href"), x.select("a[href]").text))).toList
 

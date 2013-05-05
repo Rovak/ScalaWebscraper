@@ -12,9 +12,15 @@ You can easily install it using this [install script](~/eclipse_scala/workspace/
 
 ## Usage
 
-Run `sbt run` in the root folder and choose the client or server application.
+To try the example navigate to the project folder and run
 
-You have to start the client application first
+```
+sbt
+project scraper-demo
+run
+```
+
+This will start the example scraper which fetches some results from Google
 
 ## Examples
 
@@ -23,7 +29,7 @@ Scraping by Google search term
 ```scala
 import org.rovak.scraper.query._
 
-for (link <- Scrape google "php elephant" result) {
+for (link <- Scrape google "php elephant") {
   println("Elephant found: " + link.name)
 }
 ```
@@ -35,9 +41,9 @@ import org.rovak.scraper.query._
 
 val query = Scrape from "http://www.google.nl/search?q=scala" select "#res li.g h3.r a"
 
-for (link <- query.result) {
+for (link <- query) {
   // Use the resulting url's to scrape the found websites
-  for (sublink <- Scrape from link.url select "a" result) {
+  for (sublink <- Scrape from link.url select "a") {
     println("Found: " + sublink)
   }
 }
