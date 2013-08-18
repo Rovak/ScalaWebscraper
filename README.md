@@ -29,7 +29,7 @@ Scraping by Google search term
 ```scala
 import org.rovak.scraper.query._
 
-for (link <- Scrape google "php elephant") {
+Scrape google "php elephant" map { link =>
   println("Elephant found: " + link.name)
 }
 ```
@@ -41,9 +41,8 @@ import org.rovak.scraper.query._
 
 val query = Scrape from "http://www.google.nl/search?q=scala" select "#res li.g h3.r a"
 
-for (link <- query) {
-  // Use the resulting url's to scrape the found websites
-  for (sublink <- Scrape from link.url select "a") {
+Scrape from "http://www.google.nl/search?q=scala" select "#res li.g h3.r a" map { link =>
+  Scrape from link.url select "a" map { sublink =>
     println("Found: " + sublink)
   }
 }
