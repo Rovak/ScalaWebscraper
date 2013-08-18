@@ -2,11 +2,12 @@ package org.rovak.scraper.scrapers
 
 import akka.actor._
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
 import scala.collection.JavaConversions._
 
 case class Links(links: List[String])
+
 case class LinkResult(results: List[String])
+
 case class Website(url: String)
 
 /**
@@ -16,7 +17,7 @@ class WebsiteScraper extends Actor {
 
   /**
    * Retrieve all the <a> tags from the given url
-   * 
+   *
    * @param url String A website url which will be scraped for links
    * @return List[(String, String)]
    */
@@ -31,18 +32,18 @@ class WebsiteScraper extends Actor {
         x.select("a[href]").attr("abs:href"),
         x.select("a[href]").text)).toList
 
-      for (link <- links) {
-        println("Url: " + link._1 + ", Website: " + link._2)
+      links.map { link =>
         val websiteScraper = context.system.actorOf(Props[WebsiteScraper])
         websiteScraper ! Website(link._1)
       }
-
     } catch {
-      case e: Exception => { println("Could not scrape url: " + e.getMessage()) }
+      case e: Exception => {
+        println("Could not scrape url: " + e.getMessage)
+      }
     }
 
     links
-  }  
+  }
 
   /**
    * Iterate through a list of websites and call the getLinks for each
@@ -51,8 +52,7 @@ class WebsiteScraper extends Actor {
    * @return List[String]
    */
   def scrapeLinks(links: List[String]) = {
-
-    for (link <- links) {
+    links.map { link =>
       val websiteScraper = context.system.actorOf(Props[WebsiteScraper])
       websiteScraper ! Website(link)
     }

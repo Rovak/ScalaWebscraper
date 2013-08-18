@@ -1,6 +1,6 @@
 package org.rovak.scraper.query
 
-import java.net.{ URLEncoder }
+import java.net.URLEncoder
 
 /**
  * QueryBuilder factory

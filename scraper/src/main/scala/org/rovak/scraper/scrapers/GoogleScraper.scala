@@ -2,10 +2,10 @@ package org.rovak.scraper.scrapers
 
 import akka.actor._
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
 import scala.collection.JavaConversions._
 
 case class SearchTerms(searchTerms: List[String])
+
 case class SearchTerm(searchTerm: String)
 
 /**
@@ -25,7 +25,7 @@ class GoogleScraper extends Actor {
    * @param url String A website url which will be scraped for links
    * @return List[(String, String)]
    */
-  def getResults(url: String): List[(String, String)] = {
+  def getResults(url: String) = {
 
     var links: List[(String, String)] = List()
 
@@ -43,10 +43,12 @@ class GoogleScraper extends Actor {
       }
 
     } catch {
-      case e: Exception => { println("Could not scrape url: " + e.getMessage()) }
+      case e: Exception => {
+        println("Could not scrape url: " + e.getMessage)
+      }
     }
 
-    return links
+    links
   }
 
   /**
@@ -56,8 +58,7 @@ class GoogleScraper extends Actor {
    * @return List[String]
    */
   def scrapeSearchTerms(links: List[String]) = {
-
-    for (link <- links) {
+    links.map { link =>
       val websiteScraper = context.system.actorOf(Props[GoogleScraper])
       websiteScraper ! SearchTerm(link)
     }
