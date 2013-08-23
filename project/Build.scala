@@ -9,7 +9,7 @@ object SbtProject extends Build {
       resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
       resolvers += "sonatype-public" at "https://oss.sonatype.org/content/groups/public",
       version := projectVersion,
-      scalaVersion := "2.10.1")
+      scalaVersion := "2.10.2")
 
   lazy val scraper = Project(
     id = "scraper",
@@ -19,7 +19,7 @@ object SbtProject extends Build {
           Dependencies.Etc.jsoup,
           Dependencies.Akka.actor),
       version := projectVersion,
-      scalaVersion := "2.10.1"
+      scalaVersion := "2.10.2"
     )
   )
 
@@ -30,7 +30,7 @@ object SbtProject extends Build {
     settings = defaultSettings ++ Seq(
       libraryDependencies ++= Dependencies.akka,
       version := projectVersion,
-      scalaVersion := "2.10.1"
+      scalaVersion := "2.10.2"
     )
   )
   .aggregate(scraper)
@@ -42,16 +42,16 @@ object SbtProject extends Build {
     settings = defaultSettings ++ Seq(
       libraryDependencies ++= Dependencies.database ++ Seq(Dependencies.Typesafe.config),
       version := projectVersion,
-      scalaVersion := "2.10.1"
+      scalaVersion := "2.10.2"
     )
   )
   .aggregate(scraper)
 
   object Dependencies {
       object Akka {
-        val actor 			= "com.typesafe.akka"			%% "akka-actor"				% "2.1.0"
-        val remote			= "com.typesafe.akka"			%% "akka-remote"			% "2.1.0"
-        val kernel			= "com.typesafe.akka"			%% "akka-kernel"			% "2.1.0"
+        val actor 			= "com.typesafe.akka"			%% "akka-actor"				% "2.2.0"
+        val remote			= "com.typesafe.akka"			%% "akka-remote"			% "2.2.0"
+        val kernel			= "com.typesafe.akka"			%% "akka-kernel"			% "2.2.0"
       }
       
       object Typesafe {
