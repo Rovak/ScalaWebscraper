@@ -1,14 +1,46 @@
 package scraper.demo
 
-import org.rovak.scraper.query._
-import org.jsoup.nodes.{ Element, Document }
+import org.rovak.scraper.websites.Google
+
+import org.rovak.scraper.{Collector, ScrapeManager}
+import org.rovak.scraper.models.{Href}
+import org.jsoup.nodes.Element
+import scala.collection.JavaConversions.asScalaBuffer
+import org.rovak.scraper.ScrapeManager._
 
 
 object TestApp extends App {
 
-  Scrape from "http://www.google.nl/search?q=scala" select "#res li.g h3.r a" map { link =>
-    Scrape from link.url select "a" map { sublink =>
-      println("Found: " + sublink)
+  implicit val collector = new Collector()
+
+  def scrapeSomething = { x: Element =>
+    new TestResult {
+      name = x.select("a[href]").text
+      results = x.select("safa").map(x => Href(x.select("a[href]").attr("abs:href"), x.select("a[href]").text)).toList
+    }
+  }
+
+  scrape from Google.search("php elephant") open { implicit page =>
+
+    "a" collect { x: Element =>
+      new TestResult {
+        name = x.select("a[href]").text
+        results = x.select("safa").map(x => Href(x.select("a[href]").attr("abs:href"), x.select("a[href]").text)).toList
+      }
+    }
+
+    "sadsad" collect scrapeSomething
+
+    "asf safa" each { x: Element =>
+
+    }
+
+  }
+
+  scrape select Google.results from Google.search("php elephant") each { href =>
+
+    scrape select "a" from href.url map { link =>
+
     }
   }
 }
