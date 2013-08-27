@@ -58,9 +58,10 @@ class GoogleScraper extends Actor {
    * @return List[String]
    */
   def scrapeSearchTerms(links: List[String]) = {
-    links.map { link =>
-      val websiteScraper = context.system.actorOf(Props[GoogleScraper])
-      websiteScraper ! SearchTerm(link)
+    links.map {
+      link =>
+        val websiteScraper = context.system.actorOf(Props[GoogleScraper])
+        websiteScraper ! SearchTerm(link)
     }
   }
 

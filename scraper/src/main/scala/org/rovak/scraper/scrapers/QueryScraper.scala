@@ -1,9 +1,9 @@
 package org.rovak.scraper.scrapers
 
 import akka.actor.Actor
-import org.rovak.scraper.query._
 import org.jsoup.Jsoup
 import scala.collection.JavaConversions._
+import org.rovak.scraper.models.{Href, QueryBuilder}
 
 /**
  * Query messages, contains a QueryBuilder which contains scrape information

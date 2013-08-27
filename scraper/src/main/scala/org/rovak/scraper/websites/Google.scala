@@ -1,6 +1,5 @@
 package org.rovak.scraper.websites
 
-import org.rovak.scraper.models.{FromClass, QueryBuilder}
 
 object Google {
 

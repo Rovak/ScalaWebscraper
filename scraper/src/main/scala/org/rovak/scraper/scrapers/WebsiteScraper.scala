@@ -32,9 +32,10 @@ class WebsiteScraper extends Actor {
         x.select("a[href]").attr("abs:href"),
         x.select("a[href]").text)).toList
 
-      links.map { link =>
-        val websiteScraper = context.system.actorOf(Props[WebsiteScraper])
-        websiteScraper ! Website(link._1)
+      links.map {
+        link =>
+          val websiteScraper = context.system.actorOf(Props[WebsiteScraper])
+          websiteScraper ! Website(link._1)
       }
     } catch {
       case e: Exception => {
@@ -52,9 +53,10 @@ class WebsiteScraper extends Actor {
    * @return List[String]
    */
   def scrapeLinks(links: List[String]) = {
-    links.map { link =>
-      val websiteScraper = context.system.actorOf(Props[WebsiteScraper])
-      websiteScraper ! Website(link)
+    links.map {
+      link =>
+        val websiteScraper = context.system.actorOf(Props[WebsiteScraper])
+        websiteScraper ! Website(link)
     }
   }
 

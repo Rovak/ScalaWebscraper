@@ -3,11 +3,19 @@ package scraper.demo
 import org.rovak.scraper.websites.Google
 
 import org.rovak.scraper.{Collector, ScrapeManager}
-import org.rovak.scraper.models.{Href}
+import org.rovak.scraper.models.{Result, Href}
 import org.jsoup.nodes.Element
 import scala.collection.JavaConversions.asScalaBuffer
 import org.rovak.scraper.ScrapeManager._
 
+
+class TestResult extends Result {
+
+  var name = ""
+  var results: List[Href] = List()
+
+  def toCSV = "\"" + name + "\"," + "\""+ results.size + "\""
+}
 
 object TestApp extends App {
 
@@ -20,27 +28,13 @@ object TestApp extends App {
     }
   }
 
-  scrape from Google.search("php elephant") open { implicit page =>
+  scrape from Google.search("php+elephant") open { implicit page =>
 
-    "a" collect { x: Element =>
+    Google.results collect { x: Element =>
       new TestResult {
         name = x.select("a[href]").text
         results = x.select("safa").map(x => Href(x.select("a[href]").attr("abs:href"), x.select("a[href]").text)).toList
       }
-    }
-
-    "sadsad" collect scrapeSomething
-
-    "asf safa" each { x: Element =>
-
-    }
-
-  }
-
-  scrape select Google.results from Google.search("php elephant") each { href =>
-
-    scrape select "a" from href.url map { link =>
-
     }
   }
 }

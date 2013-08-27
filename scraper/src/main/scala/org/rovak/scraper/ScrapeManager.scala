@@ -13,6 +13,7 @@ import java.net.URL
 
 class Scraper(actor: ActorRef) {
   implicit val timeout = new Timeout(15 second)
+
   def scrape(url: String) = actor ? WebPage(new URL(url))
 }
 
@@ -29,10 +30,12 @@ object ScrapeManager {
   }
 
   implicit class Test(query: String) {
-    def search(implicit c: Collector) = c.collect("Searching: " + query)
+    //def search(implicit c: Collector) = c.collect("Searching: " + query)
+
     def collect(reader: Element => Result)(implicit c: Collector, page: WebPage) = {
-      page.doc.select(query).map(reader)
+      page.doc.select(query).map(x => c.collect(reader(x)))
     }
+
     def each[T](reader: Element => T)(implicit page: WebPage): List[T] = {
       page.doc.select(query).map(reader).toList
     }

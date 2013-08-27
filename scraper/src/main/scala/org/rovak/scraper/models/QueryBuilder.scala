@@ -1,7 +1,6 @@
 package org.rovak.scraper.models
 
-import org.jsoup.nodes.{Element, Document}
-import org.rovak.scraper.query.Href
+import org.jsoup.nodes.Document
 import org.rovak.scraper.Scraper
 import scala.collection.JavaConversions.asScalaBuffer
 import scala.concurrent.duration._
@@ -15,7 +14,7 @@ class QueryBuilder(implicit scraper: Scraper, var url: String = "", var query: S
 
   import ExecutionContext.Implicits.global
 
-  def iterator =  Await.result(links, 5 second).iterator
+  def iterator = Await.result(links, 5 second).iterator
 
   def from(newUrl: String): QueryBuilder = {
     url = newUrl
@@ -33,9 +32,9 @@ class QueryBuilder(implicit scraper: Scraper, var url: String = "", var query: S
   }
 
 
-  def open(f: Document => Unit): QueryBuilder = {
+  def open(f: WebPage => Unit): QueryBuilder = {
     page onSuccess {
-      case (page: WebPage) => f(page.doc)
+      case (page: WebPage) => f(page)
     }
     this
   }
@@ -51,7 +50,7 @@ class QueryBuilder(implicit scraper: Scraper, var url: String = "", var query: S
    * Download the page and look for <a> tags with a href attribute
    */
   def links = {
-   page map  {
+    page map {
       case (x: Document) => {
         x.select(query).map(x => new Href {
           url = x.select("a[href]").attr("abs:href")
@@ -67,7 +66,9 @@ class QueryBuilder(implicit scraper: Scraper, var url: String = "", var query: S
    * @param f a function which will be called for every result
    */
   def each(f: Href => Unit): QueryBuilder = {
-    links onSuccess { case (x: List[Href]) => x.map(f) }
+    links onSuccess {
+      case (x: List[Href]) => x.map(f)
+    }
     this
   }
 }
