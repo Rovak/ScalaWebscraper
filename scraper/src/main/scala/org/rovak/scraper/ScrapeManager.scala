@@ -23,6 +23,8 @@ object ScrapeManager {
 
   implicit val scrapeMgr = new Scraper(scraper)
 
+  implicit def String2Url(url: String) = new URL(url)
+
   def scrape = new QueryBuilder()
 
   def collect(query: String, reader: => Href)(implicit c: Collector) = {
@@ -30,8 +32,6 @@ object ScrapeManager {
   }
 
   implicit class Test(query: String) {
-    //def search(implicit c: Collector) = c.collect("Searching: " + query)
-
     def collect(reader: Element => Result)(implicit c: Collector, page: WebPage) = {
       page.doc.select(query).map(x => c.collect(reader(x)))
     }

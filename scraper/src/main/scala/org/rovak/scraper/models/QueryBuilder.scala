@@ -1,6 +1,5 @@
 package org.rovak.scraper.models
 
-import org.jsoup.nodes.Document
 import org.rovak.scraper.Scraper
 import scala.collection.JavaConversions.asScalaBuffer
 import scala.concurrent.duration._
@@ -51,8 +50,8 @@ class QueryBuilder(implicit scraper: Scraper, var url: String = "", var query: S
    */
   def links = {
     page map {
-      case (x: Document) => {
-        x.select(query).map(x => new Href {
+      case (x: WebPage) => {
+        x.doc.select(query).map(x => new Href {
           url = x.select("a[href]").attr("abs:href")
           name = x.select("a[href]").text
         }).toList
