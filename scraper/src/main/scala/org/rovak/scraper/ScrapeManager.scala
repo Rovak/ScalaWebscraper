@@ -3,13 +3,13 @@ package org.rovak.scraper
 import akka.actor._
 import akka.routing.RoundRobinRouter
 import org.rovak.scraper.models.{Result, Href, WebPage, QueryBuilder}
-import org.rovak.scraper.scrapers.SearchTerm
 import akka.pattern.ask
 import scala.concurrent.duration._
 import akka.util.Timeout
 import scala.collection.JavaConversions.asScalaBuffer
 import org.jsoup.nodes.Element
 import java.net.URL
+import org.rovak.scraper.collectors.Collector
 
 class Scraper(actor: ActorRef) {
   implicit val timeout = new Timeout(15 second)
@@ -19,19 +19,16 @@ class Scraper(actor: ActorRef) {
 
 object ScrapeManager {
   val system = ActorSystem()
-  val scraper = system.actorOf(Props[actors.Scraper].withRouter(RoundRobinRouter(nrOfInstances = 15)), "scraper")
+  val scrapeActor = system.actorOf(Props[actors.Scraper].withRouter(RoundRobinRouter(nrOfInstances = 15)), "scraper")
 
-  implicit val scrapeMgr = new Scraper(scraper)
+  implicit val scraper = new Scraper(scrapeActor)
 
   implicit def String2Url(url: String) = new URL(url)
 
   def scrape = new QueryBuilder()
 
-  def collect(query: String, reader: => Href)(implicit c: Collector) = {
 
-  }
-
-  implicit class Test(query: String) {
+  implicit class StringUtils(query: String) {
     def collect(reader: Element => Result)(implicit c: Collector, page: WebPage) = {
       page.doc.select(query).map(x => c.collect(reader(x)))
     }

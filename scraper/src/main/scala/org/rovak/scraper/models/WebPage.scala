@@ -12,10 +12,11 @@ case class WebPage(url: java.net.URL) {
   def link = url.toString
 
   def links = {
-    doc.select("a").map(x => new Href {
-      url = x.select("a[href]").attr("abs:href")
-      name = x.select("a[href]").text
-    }).toList
+    doc.select("a").map(x =>
+      new Href {
+        url = x.select("a[href]").attr("abs:href")
+        name = x.select("a[href]").text
+      }).toList
   }
 
 }

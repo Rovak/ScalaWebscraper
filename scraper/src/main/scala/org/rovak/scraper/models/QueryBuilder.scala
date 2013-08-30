@@ -31,9 +31,14 @@ class QueryBuilder(implicit scraper: Scraper, var url: String = "", var query: S
   }
 
 
-  def open(f: WebPage => Unit): QueryBuilder = {
+  /**
+   * Read the page and execute the method on success
+   * @param x
+   * @return
+   */
+  def open(x: WebPage => Unit): QueryBuilder = {
     page onSuccess {
-      case (page: WebPage) => f(page)
+      case (page: WebPage) => x(page)
     }
     this
   }
@@ -51,10 +56,11 @@ class QueryBuilder(implicit scraper: Scraper, var url: String = "", var query: S
   def links = {
     page map {
       case (x: WebPage) => {
-        x.doc.select(query).map(x => new Href {
-          url = x.select("a[href]").attr("abs:href")
-          name = x.select("a[href]").text
-        }).toList
+        x.doc.select(query).map(x =>
+          new Href {
+            url = x.select("a[href]").attr("abs:href")
+            name = x.select("a[href]").text
+          }).toList
       }
     }
   }
