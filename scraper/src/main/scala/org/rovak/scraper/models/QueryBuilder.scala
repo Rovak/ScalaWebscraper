@@ -1,9 +1,9 @@
 package org.rovak.scraper.models
 
 import org.rovak.scraper.Scraper
-import scala.collection.JavaConversions.asScalaBuffer
-import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Await}
+import scala.concurrent.duration._
+import scala.collection.JavaConversions._
 
 case class FromClass(f: QueryBuilder => String) {
   def execute(qb: QueryBuilder) = f(qb)
@@ -12,6 +12,7 @@ case class FromClass(f: QueryBuilder => String) {
 class QueryBuilder(implicit scraper: Scraper, var url: String = "", var query: String = "") extends Serializable with Iterable[Href] {
 
   import ExecutionContext.Implicits.global
+
 
   def iterator = Await.result(links, 5 second).iterator
 

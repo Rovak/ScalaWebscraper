@@ -6,9 +6,8 @@ import org.rovak.scraper.models.Result
 /**
  * Collects results and writes them to a local file
  */
-class FileWriterCollector extends Collector {
+class FileWriterCollector(filename: String = "results.txt") extends Collector {
 
-  val filename = "results.txt"
   val writer: Writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename), "utf-8"))
 
   def collect(result: Result) = {

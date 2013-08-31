@@ -1,11 +1,12 @@
 package org.rovak.scraper.spiders
 
-import org.rovak.scraper.models.WebPage
+import org.rovak.scraper.models.{Href, WebPage}
 import org.rovak.scraper.ScrapeManager
-import java.net.URL
 
 
 class Spider {
+
+  import ScrapeManager._
 
   var name: String = "unknown"
 
@@ -25,11 +26,21 @@ class Spider {
   var crawledPages = List[WebPage]()
 
   /**
-   * Hook into any received pages
+   * Triggered when a page has been downloaded
    */
   var onReceivedPage = List[WebPage => Unit]()
 
+  /**
+   * Triggered just before the spider starts searching
+   *
+   * Additional start urls can be returned by the method
+   */
   var onStart = List[Spider => List[String]]()
+
+  /**
+   * Triggered every time a link is found
+   */
+  var onLinkFound = List[Href => Unit]()
 
   /**
    * Before reading a page check if it is allowed
@@ -46,12 +57,14 @@ class Spider {
    */
   def scrapePage(page: WebPage): Unit = {
     try {
-      import ScrapeManager._
       if (beforeReadingPage(page)) {
         crawledPages ::= page
         scrape from page.link open { page =>
           onReceivedPage.foreach(_(page))
-          page.links.map(link => scrapePage(WebPage(link.url)))
+          page.links.foreach { link =>
+            onLinkFound.foreach(y => y(link))
+            scrapePage(WebPage(link.url))
+          }
         }
       }
     }
@@ -62,7 +75,6 @@ class Spider {
   }
 
   def start() = {
-    import ScrapeManager._
     onStart.foldLeft(startUrls) {
       case (urls, current) => urls ++ current(this)
     } foreach (x => scrapePage(new WebPage(x)))

@@ -3,7 +3,7 @@ package org.rovak.scraper.spiders
 import org.rovak.scraper.models.WebPage
 import java.util.regex.Pattern
 
-trait EmailSpider  {
+trait EmailSpider {
   this: Spider =>
 
   var foundEmails = List[String]()

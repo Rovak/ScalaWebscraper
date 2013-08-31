@@ -8,8 +8,9 @@ import scala.concurrent.duration._
 import akka.util.Timeout
 import scala.collection.JavaConversions.asScalaBuffer
 import org.jsoup.nodes.Element
-import java.net.URL
+import java.net._
 import org.rovak.scraper.collectors.Collector
+import org.rovak.scraper.models.WebPage
 
 class Scraper(actor: ActorRef) {
   implicit val timeout = new Timeout(15 second)
@@ -36,6 +37,20 @@ object ScrapeManager {
     def each[T](reader: Element => T)(implicit page: WebPage): List[T] = {
       page.doc.select(query).map(reader).toList
     }
-  }
 
+    /**
+     * Validate if the given URL is valid
+     * @return
+     */
+    def isValidURL: Boolean = {
+      try {
+        new URL(query).toURI
+        true
+      }
+      catch {
+        case e: MalformedURLException => false
+        case e: URISyntaxException => false
+      }
+    }
+  }
 }

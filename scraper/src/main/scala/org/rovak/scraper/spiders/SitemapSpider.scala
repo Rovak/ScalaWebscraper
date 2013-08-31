@@ -1,7 +1,7 @@
 package org.rovak.scraper.spiders
 
+import java.net.URL
 import scala.xml.{Elem, XML}
-import org.jsoup.nodes.Node
 
 trait SitemapSpider {
   this: Spider =>
@@ -15,11 +15,18 @@ trait SitemapSpider {
         val location = x.text
         if (location.endsWith(".xml")) openSitemap(location)
         else List(location)
-    } flatMap { x: List[String] => x } toList
+    } flatMap { x: List[String] => x} toList
+  }
+
+  def startUrlsSiteMaps = {
+    startUrls.map { startUrl: String =>
+      val start = new URL(startUrl)
+      s"${start.getProtocol}://${start.getHost}/sitemap.xml"
+    }
   }
 
   onStart ::= { spider: Spider =>
-    sitemapUrls.foldLeft(List[String]()) {
+    (sitemapUrls ++ startUrlsSiteMaps).foldLeft(List[String]()) {
       (list, sitemap) => list ++ openSitemap(sitemap)
     }
   }
