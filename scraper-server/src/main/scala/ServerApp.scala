@@ -3,7 +3,6 @@ package scraper.demo
 import akka.actor._
 import akka.kernel.Bootable
 import com.typesafe.config._
-import org.rovak.scraper.query._
 import akka.routing.RoundRobinRouter
 
 /**
@@ -17,7 +16,7 @@ class ServerApp extends Bootable {
   val router2 = system.actorOf(Props().withRouter(RoundRobinRouter(routees = routees)))
 
   def sendMessage = {
-    router2 ! scrapers.Query(Scrape from "http://www.google.nl/search?q=php" select "a")
+
   }
 
   def startup = {
