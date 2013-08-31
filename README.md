@@ -3,15 +3,11 @@ Scala Webscraper
 
 ## Getting started
 
-To try the example navigate to the project folder and run
+The project is build with Scala 2.10.2 and sbt 0.13.0, both can be installed
+using this [install script](https://gist.github.com/Rovak/4967148)
 
-```
-sbt
-project scraper-demo
-run
-```
-
-This will start the example scraper which fetches some results from Google
+To try the example navigate to the project folder and run `sbt "project scraper-demo" run`
+which will start the example scraper
 
 ## DSL
 
@@ -110,12 +106,6 @@ new Spider with EmailSpider with SitemapSpider {
   }
 }.start()
 ```
-
-## Build
-
-The project is build with Scala 2.10.2 >= and sbt 0.13.0 >=.
-
-Both can be installed using this [install script](https://gist.github.com/Rovak/4967148)
 
 ## Documentation
 
