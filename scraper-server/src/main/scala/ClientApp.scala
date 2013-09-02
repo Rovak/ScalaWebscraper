@@ -19,7 +19,7 @@ class ClientApp(port: Int = 2555) extends Bootable {
     .withFallback(ConfigFactory.load.getConfig("client"));
 
   val system = ActorSystem("Client", cfg)
-  val actor = system.actorOf(Props[scrapers.QueryScraper].withRouter(RoundRobinRouter(nrOfInstances = 15)), "query")
+  //val actor = system.actorOf(Props[scrapers.QueryScraper].withRouter(RoundRobinRouter(nrOfInstances = 15)), "query")
 
   def startup = {
 
