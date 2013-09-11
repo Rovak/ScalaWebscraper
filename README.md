@@ -64,7 +64,7 @@ new Spider {
 ```
 
 The spider can be extended by providing traits, if you want to scrape emails then
-the EmailSpider trait can be used.
+add the EmailSpider trait which offers a new `onEmailFound` hook in which emails can be collected.
 
 ```scala
 new Spider with EmailSpider {

@@ -4,6 +4,8 @@ import org.rovak.scraper.Scraper
 import scala.concurrent.{ExecutionContext, Await}
 import scala.concurrent.duration._
 import scala.collection.JavaConversions._
+import org.jsoup.select.Elements
+import org.jsoup.nodes.Element
 
 case class FromClass(f: QueryBuilder => String) {
   def execute(qb: QueryBuilder) = f(qb)
@@ -71,9 +73,13 @@ class QueryBuilder(implicit scraper: Scraper, var url: String = "", var query: S
    *
    * @param f a function which will be called for every result
    */
-  def each(f: Href => Unit): QueryBuilder = {
-    links onSuccess {
-      case (x: List[Href]) => x.map(f)
+  def each(f: Element => Unit): QueryBuilder = {
+    page map {
+      case (x: WebPage) => {
+        x.doc.select(query)
+      }
+    } onSuccess {
+      case (x: Elements) => x.map(f)
     }
     this
   }

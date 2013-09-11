@@ -8,8 +8,6 @@ class Spider {
 
   import ScrapeManager._
 
-  var name: String = "unknown"
-
   /**
    * Allowed domains
    */
@@ -52,7 +50,8 @@ class Spider {
   }
 
   /**
-   * Scrape a single page, it will check if its valid and if
+   * Scrape a single page
+   *
    * @param page page to scrape
    */
   def scrapePage(page: WebPage): Unit = {
@@ -74,6 +73,9 @@ class Spider {
     }
   }
 
+  /**
+   * Start running the spider
+   */
   def start() = {
     onStart.foldLeft(startUrls) {
       case (urls, current) => urls ++ current(this)
