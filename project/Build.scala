@@ -1,15 +1,15 @@
 import sbt._
 import sbt.Keys._
 
-object SbtProject extends Build {
+object Build extends Build {
 
-  val projectVersion = "0.3-SNAPSHOT"
+  val projectVersion = "0.4-SNAPSHOT"
 
   val defaultSettings = Project.defaultSettings ++ Seq(
       resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
       resolvers += "sonatype-public" at "https://oss.sonatype.org/content/groups/public",
       version := projectVersion,
-      scalaVersion := "2.10.2")
+      scalaVersion := "2.10.3")
 
   lazy val scraper = Project(
     id = "scraper",
