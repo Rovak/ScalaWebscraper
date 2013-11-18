@@ -1,5 +1,7 @@
-Scala Webscraper
-================
+Scala Webscraper 0.4
+====================
+
+[![Build Status](https://api.travis-ci.org/Rovak/ScalaWebscraper.png?branch=master)](https://travis-ci.org/Rovak/ScalaWebscraper)
 
 ## Getting started
 
