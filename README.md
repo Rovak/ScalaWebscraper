@@ -1,5 +1,5 @@
-Scala Webscraper
-================
+Scala Webscraper 0.4
+====================
 
 ## Getting started
 
