@@ -1,6 +1,8 @@
 Scala Webscraper 0.4
 ====================
 
+[![Build Status](https://api.travis-ci.org/Rovak/ScalaWebscraper.png?branch=master)](https://travis-ci.org/Rovak/ScalaWebscraper)
+
 ## Getting started
 
 The project is build with Scala 2.10.2 and sbt 0.13.0, both can be installed
