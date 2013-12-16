@@ -25,7 +25,7 @@ object Build extends Build {
         Some("releases" at nexus + "service/local/staging/deploy/maven2")
     },
 
-    organization := "com.rovak.scraper",
+    organization := "nl.razko.scraper",
 
     publishMavenStyle := true,
 
