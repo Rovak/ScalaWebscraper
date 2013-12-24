@@ -4,7 +4,7 @@ import scala.Some
 
 object Build extends Build {
 
-  val projectVersion = "0.4-SNAPSHOT"
+  val projectVersion = "0.4.0"
 
   val defaultSettings = Project.defaultSettings ++ Seq(
       resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
@@ -25,11 +25,13 @@ object Build extends Build {
         Some("releases" at nexus + "service/local/staging/deploy/maven2")
     },
 
-    organization := "nl.razko.scraper",
+    organization := "nl.razko",
 
     publishMavenStyle := true,
 
     pomIncludeRepository := { _ => false },
+
+    publishArtifact in Test := false,
 
     pomExtra := (
       <url>https://github.com/Rovak/ScalaWebscraper</url>
