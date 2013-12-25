@@ -1,25 +1,26 @@
 package org.rovak.scraper.models
 
 import org.rovak.scraper.Scraper
-import scala.concurrent.{ExecutionContext, Await}
+import scala.concurrent.{Future, ExecutionContext, Await}
 import scala.concurrent.duration._
 import scala.collection.JavaConversions._
 import org.jsoup.select.Elements
 import org.jsoup.nodes.Element
+import java.net.URL
+import org.jsoup.Jsoup
 
 case class FromClass(f: QueryBuilder => String) {
   def execute(qb: QueryBuilder) = f(qb)
 }
 
-class QueryBuilder(implicit scraper: Scraper, var url: String = "", var query: String = "") extends Serializable with Iterable[Href] {
+class QueryBuilder(var pageUrl: String = "", var query: String = "") extends Serializable with Iterable[Href] {
 
   import ExecutionContext.Implicits.global
-
 
   def iterator = Await.result(links, 5 second).iterator
 
   def from(newUrl: String): QueryBuilder = {
-    url = newUrl
+    pageUrl = newUrl
     this
   }
 
@@ -49,8 +50,20 @@ class QueryBuilder(implicit scraper: Scraper, var url: String = "", var query: S
   /**
    * Download a page
    */
-  protected def page = {
-    scraper.scrape(url)
+  protected def page = Future {
+    try {
+      new WebPage(new URL(pageUrl)) {
+        doc = Jsoup
+          .connect(pageUrl)
+          .userAgent("Mozilla")
+          .followRedirects(true)
+          .timeout(0)
+          .get
+      }
+    }
+    catch {
+      case e: Exception => PageNotFound()
+    }
   }
 
   /**
