@@ -5,9 +5,11 @@ import org.jsoup.Jsoup
 import org.rovak.scraper.models.{PageNotFound, WebPage}
 import java.net.URL
 import akka.routing.RoundRobinRouter
-import scala.concurrent.Future
+import scala.concurrent.ExecutionContext
 import org.rovak.scraper.scrapers.AkkaScraperActor.DownloadPage
 import akka.pattern.ask
+import akka.util.Timeout
+import scala.concurrent.duration._
 
 object AkkaScraperManager {
   val system = ActorSystem()
@@ -47,7 +49,11 @@ class AkkaScraperActor extends Actor {
  */
 class AkkaScraper extends Scraper {
 
-  val scrapeActor = AkkaScraperManager.system.actorOf(Props[AkkaScraper].withRouter(RoundRobinRouter(nrOfInstances = 15)), "scraper")
+  import ExecutionContext.Implicits.global
+
+  implicit val timeout = Timeout(5.seconds)
+
+  val scrapeActor = AkkaScraperManager.system.actorOf(Props[AkkaScraperActor].withRouter(RoundRobinRouter(nrOfInstances = 15)), "scraper")
 
   def downloadPage(url: String) = {
     (scrapeActor ? DownloadPage(url)) map {

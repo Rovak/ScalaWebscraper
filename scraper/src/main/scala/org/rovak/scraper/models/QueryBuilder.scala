@@ -1,19 +1,17 @@
 package org.rovak.scraper.models
 
-import org.rovak.scraper.Scraper
-import scala.concurrent.{Future, ExecutionContext, Await}
+import scala.concurrent.{ExecutionContext, Await}
 import scala.concurrent.duration._
 import scala.collection.JavaConversions._
 import org.jsoup.select.Elements
 import org.jsoup.nodes.Element
-import java.net.URL
-import org.jsoup.Jsoup
+import org.rovak.scraper.scrapers.Scraper
 
 case class FromClass(f: QueryBuilder => String) {
   def execute(qb: QueryBuilder) = f(qb)
 }
 
-class QueryBuilder(var pageUrl: String = "", var query: String = "") extends Serializable with Iterable[Href] {
+class QueryBuilder(implicit val scraper: Scraper, var pageUrl: String = "", var query: String = "") extends Serializable with Iterable[Href] {
 
   import ExecutionContext.Implicits.global
 
@@ -40,30 +38,14 @@ class QueryBuilder(var pageUrl: String = "", var query: String = "") extends Ser
    * @return
    */
   def open(webPage: WebPage => Unit): QueryBuilder = {
-    page onSuccess {
-      case (page: WebPage) => webPage(page)
-    }
+    page onSuccess { case (page: WebPage) => webPage(page) }
     this
   }
 
   /**
    * Download a page
    */
-  protected def page = Future {
-    try {
-      new WebPage(new URL(pageUrl)) {
-        doc = Jsoup
-          .connect(pageUrl)
-          .userAgent("Mozilla")
-          .followRedirects(true)
-          .timeout(0)
-          .get
-      }
-    }
-    catch {
-      case e: Exception => PageNotFound()
-    }
-  }
+  protected def page = scraper.downloadPage(pageUrl)
 
   /**
    * Download the page and look for <a> tags with a href attribute

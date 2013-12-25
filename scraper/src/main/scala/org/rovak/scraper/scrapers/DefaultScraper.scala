@@ -1,6 +1,6 @@
 package org.rovak.scraper.scrapers
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 import org.rovak.scraper.models.{PageNotFound, WebPage}
 import java.net.URL
 import org.jsoup.Jsoup
@@ -9,6 +9,9 @@ import org.jsoup.Jsoup
  * Default scraper
  */
 class DefaultScraper extends Scraper {
+
+  import ExecutionContext.Implicits.global
+
   def downloadPage(pageUrl: String) = Future {
       new WebPage(new URL(pageUrl)) {
         doc = Jsoup
