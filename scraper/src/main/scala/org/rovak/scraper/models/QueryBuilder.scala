@@ -1,25 +1,24 @@
 package org.rovak.scraper.models
 
-import org.rovak.scraper.Scraper
 import scala.concurrent.{ExecutionContext, Await}
 import scala.concurrent.duration._
 import scala.collection.JavaConversions._
 import org.jsoup.select.Elements
 import org.jsoup.nodes.Element
+import org.rovak.scraper.scrapers.Scraper
 
 case class FromClass(f: QueryBuilder => String) {
   def execute(qb: QueryBuilder) = f(qb)
 }
 
-class QueryBuilder(implicit scraper: Scraper, var url: String = "", var query: String = "") extends Serializable with Iterable[Href] {
+class QueryBuilder(implicit val scraper: Scraper, var pageUrl: String = "", var query: String = "") extends Serializable with Iterable[Href] {
 
   import ExecutionContext.Implicits.global
-
 
   def iterator = Await.result(links, 5 second).iterator
 
   def from(newUrl: String): QueryBuilder = {
-    url = newUrl
+    pageUrl = newUrl
     this
   }
 
@@ -33,25 +32,20 @@ class QueryBuilder(implicit scraper: Scraper, var url: String = "", var query: S
     this
   }
 
-
   /**
    * Read the page and execute the method on success
-   * @param x
+   * @param webPage
    * @return
    */
-  def open(x: WebPage => Unit): QueryBuilder = {
-    page onSuccess {
-      case (page: WebPage) => x(page)
-    }
+  def open(webPage: WebPage => Unit): QueryBuilder = {
+    page onSuccess { case (page: WebPage) => webPage(page) }
     this
   }
 
   /**
    * Download a page
    */
-  protected def page = {
-    scraper.scrape(url)
-  }
+  protected def page = scraper.downloadPage(pageUrl)
 
   /**
    * Download the page and look for <a> tags with a href attribute
@@ -75,9 +69,7 @@ class QueryBuilder(implicit scraper: Scraper, var url: String = "", var query: S
    */
   def each(f: Element => Unit): QueryBuilder = {
     page map {
-      case (x: WebPage) => {
-        x.doc.select(query)
-      }
+      case (x: WebPage) => x.doc.select(query)
     } onSuccess {
       case (x: Elements) => x.map(f)
     }
