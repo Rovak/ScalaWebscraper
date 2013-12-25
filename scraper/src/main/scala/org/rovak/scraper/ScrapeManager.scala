@@ -19,15 +19,10 @@ class Scraper(actor: ActorRef) {
 }
 
 object ScrapeManager {
-  val system = ActorSystem()
-  val scrapeActor = system.actorOf(Props[actors.Scraper].withRouter(RoundRobinRouter(nrOfInstances = 15)), "scraper")
-
-  implicit val scraper = new Scraper(scrapeActor)
 
   implicit def String2Url(url: String) = new URL(url)
 
   def scrape = new QueryBuilder()
-
 
   implicit class StringUtils(query: String) {
     def collect(reader: Element => Result)(implicit c: Collector, page: WebPage) = {
