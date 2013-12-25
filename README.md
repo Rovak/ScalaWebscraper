@@ -1,4 +1,4 @@
-Scala Webscraper 0.4.0
+Scala Webscraper 0.4.1
 ======================
 
 [![Build Status](https://api.travis-ci.org/Rovak/ScalaWebscraper.png?branch=master)](https://travis-ci.org/Rovak/ScalaWebscraper)
@@ -16,7 +16,7 @@ which will start the example scraper
 If you use SBT, you just have to edit `build.sbt` and add the following:
 
 ```scala
-libraryDependencies += "nl.razko" %% "scraper" % "0.4.0"
+libraryDependencies += "nl.razko" %% "scraper" % "0.4.1"
 ```
 
 If you want to use bleeding edge versions using snapshots then add the Sonatype snapshots to the resolvers:
@@ -24,7 +24,7 @@ If you want to use bleeding edge versions using snapshots then add the Sonatype 
 ```scala
 resolvers += "Sonatype Snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
 
-libraryDependencies += "nl.razko" %% "scraper" % "0.4.0-SNAPSHOT"
+libraryDependencies += "nl.razko" %% "scraper" % "0.4.1-SNAPSHOT"
 ```
 
 ## DSL
