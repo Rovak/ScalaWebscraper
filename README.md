@@ -1,5 +1,5 @@
-Scala Webscraper 0.4
-====================
+Scala Webscraper 0.4.1
+======================
 
 [![Build Status](https://api.travis-ci.org/Rovak/ScalaWebscraper.png?branch=master)](https://travis-ci.org/Rovak/ScalaWebscraper)
 
@@ -10,6 +10,22 @@ using this [install script](https://gist.github.com/Rovak/4967148)
 
 To try the example navigate to the project folder and run `sbt "project scraper-demo" run`
 which will start the example scraper
+
+## Installation
+
+If you use SBT, you just have to edit `build.sbt` and add the following:
+
+```scala
+libraryDependencies += "nl.razko" %% "scraper" % "0.4.1"
+```
+
+If you want to use bleeding edge versions using snapshots then add the Sonatype snapshots to the resolvers:
+
+```scala
+resolvers += "Sonatype Snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
+
+libraryDependencies += "nl.razko" %% "scraper" % "0.4.1-SNAPSHOT"
+```
 
 ## DSL
 

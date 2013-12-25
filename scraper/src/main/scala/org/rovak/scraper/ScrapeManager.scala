@@ -11,23 +11,15 @@ import org.jsoup.nodes.Element
 import java.net._
 import org.rovak.scraper.collectors.Collector
 import org.rovak.scraper.models.WebPage
-
-class Scraper(actor: ActorRef) {
-  implicit val timeout = new Timeout(15 second)
-
-  def scrape(url: String) = actor ? WebPage(new URL(url))
-}
+import org.rovak.scraper.scrapers.DefaultScraper
 
 object ScrapeManager {
-  val system = ActorSystem()
-  val scrapeActor = system.actorOf(Props[actors.Scraper].withRouter(RoundRobinRouter(nrOfInstances = 15)), "scraper")
-
-  implicit val scraper = new Scraper(scrapeActor)
 
   implicit def String2Url(url: String) = new URL(url)
 
-  def scrape = new QueryBuilder()
+  implicit var scraper = new DefaultScraper
 
+  def scrape = new QueryBuilder()
 
   implicit class StringUtils(query: String) {
     def collect(reader: Element => Result)(implicit c: Collector, page: WebPage) = {

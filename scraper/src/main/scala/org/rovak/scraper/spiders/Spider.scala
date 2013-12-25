@@ -1,12 +1,18 @@
 package org.rovak.scraper.spiders
 
 import org.rovak.scraper.models.{Href, WebPage}
+import org.rovak.scraper.scrapers.DefaultScraper
 import org.rovak.scraper.ScrapeManager
 
 
 class Spider {
 
   import ScrapeManager._
+
+  /**
+   * Scraper which will be used to scrape pages
+   */
+  implicit var scraper = new DefaultScraper
 
   /**
    * Allowed domains

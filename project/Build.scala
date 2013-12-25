@@ -1,9 +1,10 @@
 import sbt._
 import sbt.Keys._
+import scala.Some
 
 object Build extends Build {
 
-  val projectVersion = "0.4-SNAPSHOT"
+  val projectVersion = "0.4.1"
 
   val defaultSettings = Project.defaultSettings ++ Seq(
       resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",
@@ -11,10 +12,54 @@ object Build extends Build {
       version := projectVersion,
       scalaVersion := "2.10.3")
 
+  val publishSettings = Seq(
+
+    /**
+     * Publish settings
+     */
+    publishTo <<= version { v: String =>
+      val nexus = "https://oss.sonatype.org/"
+      if (v.trim.endsWith("SNAPSHOT"))
+        Some("snapshots" at nexus + "content/repositories/snapshots")
+      else
+        Some("releases" at nexus + "service/local/staging/deploy/maven2")
+    },
+
+    organization := "nl.razko",
+
+    publishMavenStyle := true,
+
+    pomIncludeRepository := { _ => false },
+
+    publishArtifact in Test := false,
+
+    pomExtra := (
+      <url>https://github.com/Rovak/ScalaWebscraper</url>
+        <licenses>
+          <license>
+            <name>MIT</name>
+            <url>http://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+          </license>
+        </licenses>
+        <scm>
+          <url>git@github.com:Rovak/ScalaWebscraper.git</url>
+          <connection>scm:git:git@github.com:Rovak/ScalaWebscraper.git</connection>
+        </scm>
+        <developers>
+          <developer>
+            <id>rovak</id>
+            <name>Roy van Kaathoven</name>
+            <url>http://rovak.pro</url>
+          </developer>
+        </developers>
+      )
+  )
+
   lazy val scraper = Project(
     id = "scraper",
     base = file("scraper"),
-    settings = defaultSettings ++ Seq(
+    settings = defaultSettings ++ publishSettings ++ Seq(
       libraryDependencies ++= Seq(
           Dependencies.Etc.jsoup,
           Dependencies.Akka.actor)
