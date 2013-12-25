@@ -34,15 +34,14 @@ class QueryBuilder(var pageUrl: String = "", var query: String = "") extends Ser
     this
   }
 
-
   /**
    * Read the page and execute the method on success
-   * @param x
+   * @param webPage
    * @return
    */
-  def open(x: WebPage => Unit): QueryBuilder = {
+  def open(webPage: WebPage => Unit): QueryBuilder = {
     page onSuccess {
-      case (page: WebPage) => x(page)
+      case (page: WebPage) => webPage(page)
     }
     this
   }
@@ -88,9 +87,7 @@ class QueryBuilder(var pageUrl: String = "", var query: String = "") extends Ser
    */
   def each(f: Element => Unit): QueryBuilder = {
     page map {
-      case (x: WebPage) => {
-        x.doc.select(query)
-      }
+      case (x: WebPage) => x.doc.select(query)
     } onSuccess {
       case (x: Elements) => x.map(f)
     }
