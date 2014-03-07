@@ -33,6 +33,7 @@ The webscraper provides a simple DSL to write scrape rules
 
 ```scala
 import org.rovak.scraper.ScrapeManager._
+import org.jsoup.nodes.Element
 
 object Google {
   val results = "#res li.g h3.r a"
