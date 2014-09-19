@@ -5,4 +5,5 @@ import scala.concurrent.Future
 
 trait Scraper {
   def downloadPage(url: String): Future[WebPage]
+  def downloadPage(urlAndReferrer: (String, String)): Future[WebPage]
 }
