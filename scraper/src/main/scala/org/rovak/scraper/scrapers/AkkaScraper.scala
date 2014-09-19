@@ -16,7 +16,7 @@ object AkkaScraperManager {
 }
 
 object AkkaScraperActor {
-  case class DownloadPage(url: String)
+  case class DownloadPage(urlAndReferrer: (String, String))
 }
 
 class AkkaScraperActor extends Actor {
@@ -56,7 +56,11 @@ class AkkaScraper extends Scraper {
   val scrapeActor = AkkaScraperManager.system.actorOf(Props[AkkaScraperActor].withRouter(RoundRobinRouter(nrOfInstances = 15)), "scraper")
 
   def downloadPage(url: String) = {
-    (scrapeActor ? DownloadPage(url)) map {
+    downloadPage((url, ""))
+  }
+
+  def downloadPage(urlAndReferrer: (String, String)) = {
+    (scrapeActor ? DownloadPage(urlAndReferrer)) map {
       case page: WebPage => page
     }
   }

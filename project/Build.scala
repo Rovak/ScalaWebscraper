@@ -4,7 +4,7 @@ import scala.Some
 
 object Build extends Build {
 
-  val projectVersion = "0.4.1"
+  val projectVersion = "0.4.2-SNAPSHOT"
 
   val defaultSettings = Project.defaultSettings ++ Seq(
       resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/",

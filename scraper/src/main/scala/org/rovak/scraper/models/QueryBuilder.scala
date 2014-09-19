@@ -11,7 +11,7 @@ case class FromClass(f: QueryBuilder => String) {
   def execute(qb: QueryBuilder) = f(qb)
 }
 
-class QueryBuilder(implicit val scraper: Scraper, var pageUrl: String = "", var query: String = "") extends Serializable with Iterable[Href] {
+class QueryBuilder(implicit val scraper: Scraper, var pageUrl: String = "", var query: String = "", var referrer: String = "") extends Serializable with Iterable[Href] {
 
   import ExecutionContext.Implicits.global
 
@@ -19,6 +19,12 @@ class QueryBuilder(implicit val scraper: Scraper, var pageUrl: String = "", var 
 
   def from(newUrl: String): QueryBuilder = {
     pageUrl = newUrl
+    this
+  }
+
+  def from(urlAndReferrer: (String, String)): QueryBuilder = {
+    pageUrl = urlAndReferrer._1
+    referrer = urlAndReferrer._2
     this
   }
 
@@ -45,7 +51,7 @@ class QueryBuilder(implicit val scraper: Scraper, var pageUrl: String = "", var 
   /**
    * Download a page
    */
-  protected def page = scraper.downloadPage(pageUrl)
+  protected def page = scraper.downloadPage((pageUrl, referrer))
 
   /**
    * Download the page and look for <a> tags with a href attribute
